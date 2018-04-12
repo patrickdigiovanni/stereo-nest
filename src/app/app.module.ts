@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { AudioContextModule } from "angular-audio-context";
 import { AppComponent } from './app.component';
 import { SceneComponent } from "./scene/scene.component";
 
@@ -10,7 +10,8 @@ import { SceneComponent } from "./scene/scene.component";
     SceneComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    AudioContextModule.forRoot('balanced')
   ],
   providers: [],
   bootstrap: [AppComponent]

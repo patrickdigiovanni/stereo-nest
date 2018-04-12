@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, ElementRef, Input, ViewChild, HostListener } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild, HostListener, Injectable } from '@angular/core';
+import { AudioContext } from "angular-audio-context";
 import * as THREE from 'three';
 import "./js/EnableThreeExamples";
 import "three/examples/js/controls/OrbitControls";
@@ -9,7 +10,8 @@ import "three/examples/js/loaders/ColladaLoader";
     templateUrl: './scene.component.html',
     styleUrls: ['./scene.component.css']
 })
-export class SceneComponent implements AfterViewInit {
+
+export class SceneComponent  implements AfterViewInit {
 
     private renderer: THREE.WebGLRenderer;
     private camera: THREE.PerspectiveCamera;
@@ -21,11 +23,13 @@ export class SceneComponent implements AfterViewInit {
     public farClippingPane: number = 1100;
 
     public controls: THREE.OrbitControls;
+    private aCtx : AudioContext;
+    private analyzer : 
+    @ViewChild('canvas') private canvasRef: ElementRef;
 
-    @ViewChild('canvas')
-    private canvasRef: ElementRef;
-
-    constructor() {
+    constructor( _aCtx : AudioContext) {
+        
+        this.aCtx = _aCtx;
         this.render = this.render.bind(this);
         this.onModelLoadingCompleted = this.onModelLoadingCompleted.bind(this);
     }
@@ -36,9 +40,9 @@ export class SceneComponent implements AfterViewInit {
 
     private createScene() {
         this.scene = new THREE.Scene();
-        this.scene.add(new THREE.AxisHelper(200));
+        // this.scene.add(new THREE.AxesHelper(200));
         var loader = new THREE.ColladaLoader();
-        loader.load('assets/model/multimaterial.dae', this.onModelLoadingCompleted);
+        loader.load('assets/model/stereoNest.dae', this.onModelLoadingCompleted);
     }
 
     private onModelLoadingCompleted(collada) {
@@ -171,6 +175,9 @@ export class SceneComponent implements AfterViewInit {
 
     /* LIFECYCLE */
     ngAfterViewInit() {
+        
+        
+        
         this.createScene();
         this.createLight();
         this.createCamera();
